@@ -49,21 +49,25 @@ def send_email(subject, body):
     except smtplib.SMTPException as e:
         print(f"Failed to send email: {e}")
 
-try:
-    initial_slots = check_availability()
-    interval = 300  # 5 minutes
+def main():
+    try:
+        initial_slots = check_availability()
+        interval = 300  # 5 minutes
 
-    while True:
-        current_slots = check_availability()
-        if current_slots > initial_slots:
-            print("New booking slots available!")
-            subject = "👉🏻 BOOK NOW 👈🏻"
-            body = "New booking slots available! There are now " + str(current_slots) + " slots"            
-            send_email(subject, body)
-            initial_slots = current_slots 
-        else:
-            print("No new slots available — there are currently", current_slots, "slots")
-        
-        time.sleep(interval)
-finally:
-    driver.quit()
+        while True:
+            current_slots = check_availability()
+            if current_slots > initial_slots:
+                print("New booking slots available!")
+                subject = "👉🏻 BOOK NOW 👈🏻"
+                body = "New booking slots available! There are now " + str(current_slots) + " slots"            
+                send_email(subject, body)
+                initial_slots = current_slots 
+            else:
+                print("No new slots available — there are currently", current_slots, "slots")
+            
+            time.sleep(interval)
+    finally:
+        driver.quit()
+
+if __name__ == "__main__":
+    main()
